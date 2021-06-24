@@ -61,7 +61,7 @@ class EssentialInit : Initializer {
   
 public:
   // The RANSAC threshold for the epipolar misalignement set to 3 degrees . This is the suggested Torr-Zisserman cutoff bound for the error
-  static constexpr double RANSAC_DEFAULT_THRESHOLD_BOUND = 1 - cos(2.0 * M_PI / 180);
+  static const double RANSAC_DEFAULT_THRESHOLD_BOUND;
   
   bool Compute(std::vector<InitializerMatch> vMatches, double dMaxAngleCosError, SE3<> &se3SecondCameraPose);
   EssentialInit(ATANCamera* pcam) : Initializer(pcam) {};

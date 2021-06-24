@@ -15,9 +15,9 @@
 //#include <cvd/glwindow.h>
 //#include <TooN/TooN.h>
 
-#include <core.hpp>
-#include <cv.hpp>
-#include <highgui.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -26,9 +26,6 @@
 #include "GCVD/GLWindow.h"
 
 //#include "GLWindowMenu.h"
-
-
-using namespace GLXInterface;
 
 // forward declaration to resolve cyclic references (still the darn thing complains...)
 class GLWindowMenu;
@@ -45,7 +42,7 @@ enum GUICommand { ccmd_GrabNextFrame,
 
 
 //class GLWindow2 : public CVD::GLWindow, public CVD::GLWindow::EventHandler
-class GLWindow2 : public GLWindow, public GLWindow::EventHandler
+class GLWindow2 : public GLXInterface::GLWindow, public GLXInterface::GLWindow::EventHandler
 {
 
 public:

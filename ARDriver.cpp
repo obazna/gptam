@@ -189,7 +189,7 @@ void ARDriver::DrawFBBackGround()
 		cv::Vec2d v2UFBDistorted = v2Iter; 
 		cv::Vec2f v2UFBUnDistorted = mCamera.UFBLinearProject(mCamera.UFBUnProject(v2UFBDistorted));
 		glTexCoord2d(v2UFBDistorted[0] * mirFrameSize.width, v2UFBDistorted[1] * mirFrameSize.height);
-		glVertex(v2UFBUnDistorted);
+        GLXInterface::glVertex(v2UFBUnDistorted);
 	      }
 	  glEnd();
 	}
@@ -236,7 +236,7 @@ void ARDriver::DrawDistortedFB()
 		cv::Vec2d v2UFBDistorted = v2Iter; 
 		cv::Vec2f v2UFBUnDistorted = mCamera.UFBLinearProject(mCamera.UFBUnProject(v2UFBDistorted));
 		glTexCoord2d(v2UFBUnDistorted[0] * mirFBSize.width, (1.0 - v2UFBUnDistorted[1]) * mirFBSize.height);
-		glVertex(v2UFBDistorted);
+        GLXInterface::glVertex(v2UFBDistorted);
 	      }	 
 	  glEnd();
 	}
@@ -278,12 +278,12 @@ void ARDriver::DrawFadingGrid()
     {
       glBegin(GL_LINE_STRIP);
       for(int j=0; j<nTot; j++)
-	glVertex(aaVertex[i][j]);
+      GLXInterface::glVertex(aaVertex[i][j]);
       glEnd();
       
       glBegin(GL_LINE_STRIP);
       for(int j=0; j<nTot; j++)
-	glVertex(aaVertex[j][i]);
+      GLXInterface::glVertex(aaVertex[j][i]);
       glEnd();
     }
 }

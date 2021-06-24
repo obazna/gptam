@@ -3,3 +3,5 @@ build
 camera.cfg
 .kdev*
 gptam.kdev*
+cmake-build*
+.idea*

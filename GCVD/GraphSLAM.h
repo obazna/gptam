@@ -18,7 +18,7 @@
 
 #include <cmath>
 
-using namespace cv;
+// using namespace cv;
 
 namespace Optimization {
 

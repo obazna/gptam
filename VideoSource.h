@@ -14,8 +14,6 @@
 
 #include "OpenCV.h"
 
-using namespace cv;
-
 struct VideoSourceData;
 
 class VideoSource

@@ -22,7 +22,7 @@ VideoSource::VideoSource(int camera_index)
   std::cout << "  Initiating capture device (whatever it is)..." << std::endl;
 
   camera_index_ = camera_index;
-  pcap = new VideoCapture(camera_index_); // by device number
+  pcap = new cv::VideoCapture(camera_index_); // by device number
   
   
   if(!pcap->isOpened()) {

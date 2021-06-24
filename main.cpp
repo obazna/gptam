@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     System s(camera_index);
     s.Run();
   }
-  catch(cv::Exception e) {
+  catch(cv::Exception& e) {
     
       cout << endl;
       cout << "!! Failed to run System; got exception. " << endl;

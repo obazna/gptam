@@ -8,10 +8,9 @@
 #define __CALIB_CORNER_PATCH_H
 
 
-#include <cv.hpp>
-#include <highgui.hpp>
-#include <core.hpp>
-#include <cxcore.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/core.hpp>
 
 
 #include "GCVD/Addedutils.h"

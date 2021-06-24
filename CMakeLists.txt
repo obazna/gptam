@@ -8,36 +8,57 @@ set(CALIB_PROJ_NAME gcalibrator)
 
 ######################################
 # The external reference directory (searching) for cmake
-set(EXT_DIR ${CMAKE_SOURCE_DIR}/cmake )
-list( APPEND CMAKE_MODULE_PATH
-  ${EXT_DIR}
-)
+#set(EXT_DIR ${CMAKE_SOURCE_DIR}/cmake )
+#list( APPEND CMAKE_MODULE_PATH
+#  ${EXT_DIR}
+#)
+
+find_package(PkgConfig)
+
+find_package(OpenCV REQUIRED core imgproc highgui)
+if (OpenCV_FOUND)
+	message(STATUS "Found OpenCV at ${OpenCV_INCLUDE_DIRS}")
+endif(OpenCV_FOUND)
+
+pkg_check_modules(Glut Glut)
+if (Glut_FOUND)
+	message(STATUS "Found Glut. Headers: ${Glut_INCLUDE_DIRS}\nLibs: ${Glut_LINK_LIBRARIES}")
+	list(APPEND EXT_INCLUDE_DIRS ${Glut_INCLUDE_DIRS})
+	list(APPEND EXT_LIBS ${Glut_LINK_LIBRARIES})
+endif(Glut_FOUND)
+
+pkg_check_modules(X11 X11)
+if (X11_FOUND)
+	message(STATUS "Found X11. Headers: ${X11_INCLUDE_DIRS}\nLibs: ${X11_LINK_LIBRARIES}")
+	list(APPEND EXT_INCLUDE_DIRS ${X11_INCLUDE_DIRS})
+	list(APPEND EXT_LIBS ${X11_LINK_LIBRARIES})
+endif(X11_FOUND)
 
 ## find openCV
-set( OpenCV_INCLUDE_DIRS
-	"/usr/local/include/opencv"
-	"/usr/local/include/opencv2"
-)
+#set( OpenCV_INCLUDE_DIRS
+#	"/usr/local/include/opencv"
+#	"/usr/local/include/opencv2"
+#)
 
-set( OpenCV_LIBS
-	"/usr/local/lib/libopencv_calib3d.so"
-	"/usr/local/lib/libopencv_core.so"
-	"/usr/local/lib/libopencv_features2d.so"
-	"/usr/local/lib/libopencv_flann.so"
-	"/usr/local/lib/libopencv_highgui.so"
-	#"/usr/local/lib/libopencv_imgcodecs.so"
-	"/usr/local/lib/libopencv_imgproc.so"
-	"/usr/local/lib/libopencv_ml.so"
-	"/usr/local/lib/libopencv_objdetect.so"
-	"/usr/local/lib/libopencv_photo.so"
-	#"/usr/local/lib/libopencv_shape.so"
-	"/usr/local/lib/libopencv_stitching.so"
-	"/usr/local/lib/libopencv_superres.so"
-	"/usr/local/lib/libopencv_video.so"
-	"/usr/local/lib/libopencv_videoio.so"
-	"/usr/local/lib/libopencv_videostab.so"
-	
-)
+#set( OpenCV_LIBS
+#	"/usr/local/lib/libopencv_calib3d.so"
+#	"/usr/local/lib/libopencv_core.so"
+#	"/usr/local/lib/libopencv_features2d.so"
+#	"/usr/local/lib/libopencv_flann.so"
+#	"/usr/local/lib/libopencv_highgui.so"
+#	#"/usr/local/lib/libopencv_imgcodecs.so"
+#	"/usr/local/lib/libopencv_imgproc.so"
+#	"/usr/local/lib/libopencv_ml.so"
+#	"/usr/local/lib/libopencv_objdetect.so"
+#	"/usr/local/lib/libopencv_photo.so"
+#	#"/usr/local/lib/libopencv_shape.so"
+#	"/usr/local/lib/libopencv_stitching.so"
+#	"/usr/local/lib/libopencv_superres.so"
+#	"/usr/local/lib/libopencv_video.so"
+#	"/usr/local/lib/libopencv_videoio.so"
+#	"/usr/local/lib/libopencv_videostab.so"
+#
+#)
 
 
 list( APPEND
@@ -66,11 +87,21 @@ list( APPEND
 #endif()
 
 ## find OpenGL
-find_package(OPENGL REQUIRED)
+find_package(OpenGL REQUIRED)
 list( APPEND
 	EXT_INCLUDE_DIRS
 	${OPENGL_INCLUDE_DIR}
 )
+
+# TODO: Get rid of hardcoded paths
+if (CMAKE_HOST_APPLE)
+	list(APPEND EXT_INCLUDE_DIRS "/usr/local/Cellar/mesa/21.1.3/include/")
+	list(APPEND EXT_LIBS "/usr/local/Cellar/mesa/21.1.3/lib/libGL.1.dylib")
+endif()
+
+message("OpenGL Headers: ${OPENGL_INCLUDE_DIR}")
+message("OpenGL Libs: ${OPENGL_LIBRARIES}")
+
 list( APPEND
 	EXT_LIBS
 	${OPENGL_LIBRARIES}
@@ -110,7 +141,7 @@ set(GPTAM_PROJ_SOURCE
 	${CMAKE_SOURCE_DIR}/FAST/fast_8_score.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_9_detect.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_9_score.cpp
-        ${CMAKE_SOURCE_DIR}/FAST/fast_10_detect.cpp
+	${CMAKE_SOURCE_DIR}/FAST/fast_10_detect.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_10_score.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_11_detect.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_11_score.cpp
@@ -127,10 +158,8 @@ set(GPTAM_PROJ_SOURCE
 	${CMAKE_SOURCE_DIR}/Persistence/instances.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/GUI.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/GUI_language.cpp
-	${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/serialize.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/GStringUtil.cpp
-	${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
 )
 
 
@@ -192,10 +221,22 @@ set(GPTAM_PROJ_INCLUDE
 	${CMAKE_SOURCE_DIR}/Persistence/instances.h
 	${CMAKE_SOURCE_DIR}/Persistence/GUI.h
 	${CMAKE_SOURCE_DIR}/Persistence/GUI_impl.h
-	${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h
 	
      )
 
+if(CMAKE_HOST_APPLE)
+	list(APPEND GPTAM_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.h)
+	list(APPEND GPTAM_PROJ_SOURCE
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.cpp
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_noreadline.cpp
+			)
+else()
+	list(APPEND GPTAM_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h)
+	list(APPEND GPTAM_PROJ_SOURCE
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
+			)
+endif()
 
 ########## 2. CALIBRATOR SOURCE FILES  ###################
 	
@@ -215,7 +256,7 @@ set(CALIB_PROJ_SOURCE
 	${CMAKE_SOURCE_DIR}/FAST/fast_8_score.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_9_detect.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_9_score.cpp
-        ${CMAKE_SOURCE_DIR}/FAST/fast_10_detect.cpp
+	${CMAKE_SOURCE_DIR}/FAST/fast_10_detect.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_10_score.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_11_detect.cpp
 	${CMAKE_SOURCE_DIR}/FAST/fast_11_score.cpp
@@ -229,10 +270,8 @@ set(CALIB_PROJ_SOURCE
 	${CMAKE_SOURCE_DIR}/Persistence/instances.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/GUI.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/GUI_language.cpp
-	${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/serialize.cpp
 	${CMAKE_SOURCE_DIR}/Persistence/GStringUtil.cpp
-	${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
 )
 set(CALIB_PROJ_INCLUDE
 	
@@ -265,21 +304,36 @@ set(CALIB_PROJ_INCLUDE
 	${CMAKE_SOURCE_DIR}/Persistence/instances.h
 	${CMAKE_SOURCE_DIR}/Persistence/GUI.h
 	${CMAKE_SOURCE_DIR}/Persistence/GUI_impl.h
-	${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h
 	
      )
-	
+
+if(CMAKE_HOST_APPLE)
+	list(APPEND CALIB_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.h)
+	list(APPEND CALIB_PROJ_SOURCE
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.cpp
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_noreadline.cpp
+	)
+else()
+	list(APPEND CALIB_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h)
+	list(APPEND CALIB_PROJ_SOURCE
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
+			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
+	)
+endif()
 ############## GUITEST SOURCE FILES DONE #########################
 
 
 
 
 # The notorious OpenGL linker flags
-SET( GL_LINKER_FLAGS "-lglut -lGLU -lGL")
+#SET( GL_LINKER_FLAGS "-lglut -lGLU -lGL")
 # More linker flags for the pthread (had to look this one up and just copied it)
+if(CMAKE_HOST_APPLE)
+	# And another linker flag for the use of readline.h
+	SET( GNU_READLINE_LINKER_FLAG "-lreadline")
+endif()
+
 SET( PTHREAD_PROBLEM_LINKER_FLAGS "-lpthread -lm")
-# And another linker flag for the use of readline.h
-SET( GNU_READLINE_LINKER_FLAG "-lreadline")
 
 # declaring external library include directories
 include_directories(${EXT_INCLUDE_DIRS})
@@ -310,14 +364,11 @@ add_executable(${GPTAM_PROJ_NAME}
 	      ${GPTAM_PROJ_INCLUDE}
               )
 
-
-
 target_link_libraries(${GPTAM_PROJ_NAME}
 		      ${EXT_LIBS}
 		      ${GL_LINKER_FLAGS}
 		      ${PTHREAD_PROBLEM_LINKER_FLAGS}
-		      ${GNU_READLINE_LINKER_FLAG}
-		      )
+		      ${GNU_READLINE_LINKER_FLAG})
 
 ############ DEFINING NECESSARY MACROS (Use_XMMINTRIN=1 for now...) ###############
 target_compile_definitions(${GPTAM_PROJ_NAME} PRIVATE USE_XMMINTRIN=0)

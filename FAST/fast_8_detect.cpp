@@ -2,9 +2,9 @@
 //#include <cvd/image.h>
 //#include <cvd/byte.h>
 
-#include <cxcore.hpp>
-#include <cv.hpp>
-#include <highgui.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 
 // This is mechanically generated code. 
 

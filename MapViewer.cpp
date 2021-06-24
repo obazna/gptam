@@ -31,13 +31,13 @@ void MapViewer::DrawMapDots()
     if (!mMap.vpPoints[i]->bBad)
     {
       cv::Vec3f v3Pos = mMap.vpPoints[i]->v3WorldPos;
-      glColor(gavLevelColors[mMap.vpPoints[i]->nSourceLevel]);
+        GLXInterface::glColor(gavLevelColors[mMap.vpPoints[i]->nSourceLevel]);
       if(v3Pos.dot( v3Pos ) < 10000)
 	{
 	  nForMass++;
 	  mv3BaryCenter += v3Pos;
 	}
-      glVertex(v3Pos);
+        GLXInterface::glVertex(v3Pos);
     }
   glEnd();
   mv3BaryCenter = mv3BaryCenter / (0.1 + nForMass);
@@ -184,7 +184,7 @@ void MapViewer::SetupModelView(SE3<> se3WorldFromCurrent)
 {
   glMatrixMode(GL_MODELVIEW);  
   glLoadIdentity();
-  glMultMatrix(mse3ViewerFromWorld * se3WorldFromCurrent);
+  GLXInterface::glMultMatrix(mse3ViewerFromWorld * se3WorldFromCurrent);
   return;
 };
 

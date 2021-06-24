@@ -290,13 +290,13 @@ bool GLWindowMenu::HandleClick(int nMouseButton, int state, int x, int y)
       break;
     case Slider:
       {
-	if(nMouseButton == GLWindow::BUTTON_WHEEL_UP)
+	if(nMouseButton == GLXInterface::GLWindow::BUTTON_WHEEL_UP)
 	  {
 	    *(SelectedItem.gvnIntValue)+=1;
 	    if(*(SelectedItem.gvnIntValue) > SelectedItem.max)
 	      *(SelectedItem.gvnIntValue) = SelectedItem.max;
 	  }
-	else if(nMouseButton == GLWindow::BUTTON_WHEEL_DOWN)
+	else if(nMouseButton == GLXInterface::GLWindow::BUTTON_WHEEL_DOWN)
 	  {
 	    *(SelectedItem.gvnIntValue)-=1;
 	    if(*(SelectedItem.gvnIntValue) < SelectedItem.min)

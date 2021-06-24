@@ -23,6 +23,7 @@
 
 using namespace std;
 
+const double EssentialInit::RANSAC_DEFAULT_THRESHOLD_BOUND = 1 - cos(2.0 * M_PI / 180);
 
 // This function marks a homography match as inliner by simply checking if 
 // the first point is projected to a second point with error below the MLESAC threshold...

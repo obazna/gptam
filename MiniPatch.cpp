@@ -8,7 +8,7 @@
 
 
 using namespace std;
-using namespace cv;
+// using namespace cv;
 
 // Scoring function. This is just a sum of squared differences!
 inline int MiniPatch::SSDAtPoint(cv::Mat_<uchar> &im, const cv::Point2i &ir)

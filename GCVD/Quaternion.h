@@ -26,7 +26,7 @@ template<typename P = float>
   {
     
    
-  private:
+  public:
     // This clever little function does type deduction.
     // Credit goes to E. Rosten
     template<typename C> static C _gettype();

@@ -20,14 +20,16 @@ if (OpenCV_FOUND)
 	message(STATUS "Found OpenCV at ${OpenCV_INCLUDE_DIRS}")
 endif(OpenCV_FOUND)
 
-pkg_check_modules(Glut Glut)
+if (CMAKE_HOST_APPLE)
+pkg_check_modules(Glut glut)
 if (Glut_FOUND)
-	message(STATUS "Found Glut. Headers: ${Glut_INCLUDE_DIRS}\nLibs: ${Glut_LINK_LIBRARIES}")
-	list(APPEND EXT_INCLUDE_DIRS ${Glut_INCLUDE_DIRS})
-	list(APPEND EXT_LIBS ${Glut_LINK_LIBRARIES})
+        message(STATUS "Found Glut. Headers: ${Glut_INCLUDE_DIRS}\nLibs: ${Glut_LINK_LIBRARIES}")
+        list(APPEND EXT_INCLUDE_DIRS ${Glut_INCLUDE_DIRS})
+        list(APPEND EXT_LIBS ${Glut_LINK_LIBRARIES})
 endif(Glut_FOUND)
+endif()
 
-pkg_check_modules(X11 X11)
+pkg_check_modules(X11 x11)
 if (X11_FOUND)
 	message(STATUS "Found X11. Headers: ${X11_INCLUDE_DIRS}\nLibs: ${X11_LINK_LIBRARIES}")
 	list(APPEND EXT_INCLUDE_DIRS ${X11_INCLUDE_DIRS})
@@ -224,19 +226,19 @@ set(GPTAM_PROJ_INCLUDE
 	
      )
 
-if(CMAKE_HOST_APPLE)
-	list(APPEND GPTAM_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.h)
-	list(APPEND GPTAM_PROJ_SOURCE
-			${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.cpp
-			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_noreadline.cpp
-			)
-else()
-	list(APPEND GPTAM_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h)
-	list(APPEND GPTAM_PROJ_SOURCE
-			${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
-			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
-			)
-endif()
+#if(CMAKE_HOST_APPLE)
+        list(APPEND GPTAM_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.h)
+        list(APPEND GPTAM_PROJ_SOURCE
+                        ${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.cpp
+                        ${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_noreadline.cpp
+                        )
+#else()
+#	list(APPEND GPTAM_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h)
+#	list(APPEND GPTAM_PROJ_SOURCE
+#			${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
+#			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
+#			)
+#endif()
 
 ########## 2. CALIBRATOR SOURCE FILES  ###################
 	
@@ -307,30 +309,30 @@ set(CALIB_PROJ_INCLUDE
 	
      )
 
-if(CMAKE_HOST_APPLE)
+#if(CMAKE_HOST_APPLE)
 	list(APPEND CALIB_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.h)
 	list(APPEND CALIB_PROJ_SOURCE
 			${CMAKE_SOURCE_DIR}/Persistence/GUI_non_readline.cpp
 			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_noreadline.cpp
 	)
-else()
-	list(APPEND CALIB_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h)
-	list(APPEND CALIB_PROJ_SOURCE
-			${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
-			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
-	)
-endif()
+#else()
+#	list(APPEND CALIB_PROJ_INCLUDE ${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.h)
+#	list(APPEND CALIB_PROJ_SOURCE
+#			${CMAKE_SOURCE_DIR}/Persistence/GUI_readline.cpp
+#			${CMAKE_SOURCE_DIR}/Persistence/GUI_impl_readline.cpp
+#	)
+#endif()
 ############## GUITEST SOURCE FILES DONE #########################
 
 
 
 
-# The notorious OpenGL linker flags
-#SET( GL_LINKER_FLAGS "-lglut -lGLU -lGL")
 # More linker flags for the pthread (had to look this one up and just copied it)
-if(CMAKE_HOST_APPLE)
+if(NOT CMAKE_HOST_APPLE)
 	# And another linker flag for the use of readline.h
-	SET( GNU_READLINE_LINKER_FLAG "-lreadline")
+        #SET( GNU_READLINE_LINKER_FLAG "-lreadline")
+        # The notorious OpenGL linker flags
+        SET( GL_LINKER_FLAGS "-lglut -lGLU -lGL")
 endif()
 
 SET( PTHREAD_PROBLEM_LINKER_FLAGS "-lpthread -lm")

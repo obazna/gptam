@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <algorithm>
 
-#include <readline/readline.h>
-#include <readline/history.h>
+//#include <readline/readline.h>
+//#include <readline/history.h>
 
 
 namespace Persistence

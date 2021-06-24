@@ -2,17 +2,13 @@
 #ifndef __OPENGL_INCLUDES_H
 #define __OPENGL_INCLUDES_H
 
+#ifdef __APPLE__
+// #include <OpenGL/gl.h>
+#endif
 
-
-//#ifdef _LINUX
 #include <GL/gl.h>
 #include <GL/glext.h>
-//#endif
-
-#ifdef _OSX
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
-#endif
+#include <GL/glut.h>
 
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN

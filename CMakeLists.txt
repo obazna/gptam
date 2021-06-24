@@ -86,26 +86,26 @@ list( APPEND
 #)
 #endif()
 
-## find OpenGL
-find_package(OpenGL REQUIRED)
-list( APPEND
-	EXT_INCLUDE_DIRS
-	${OPENGL_INCLUDE_DIR}
-)
-
 # TODO: Get rid of hardcoded paths
 if (CMAKE_HOST_APPLE)
 	list(APPEND EXT_INCLUDE_DIRS "/usr/local/Cellar/mesa/21.1.3/include/")
 	list(APPEND EXT_LIBS "/usr/local/Cellar/mesa/21.1.3/lib/libGL.1.dylib")
+else()
+	## find OpenGL
+	find_package(OpenGL REQUIRED)
+	list(APPEND
+		EXT_INCLUDE_DIRS
+		${OPENGL_INCLUDE_DIR}
+	)
+
+	message("OpenGL Headers: ${OPENGL_INCLUDE_DIR}")
+	message("OpenGL Libs: ${OPENGL_LIBRARIES}")
+
+	list(APPEND
+		EXT_LIBS
+		${OPENGL_LIBRARIES}
+	)
 endif()
-
-message("OpenGL Headers: ${OPENGL_INCLUDE_DIR}")
-message("OpenGL Libs: ${OPENGL_LIBRARIES}")
-
-list( APPEND
-	EXT_LIBS
-	${OPENGL_LIBRARIES}
-)
 
 ########## 1. GPTAM SOURCE FILES  ###################
 

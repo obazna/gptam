@@ -9,8 +9,6 @@
 
 #include "GCVD/image_interpolate.h"
 //#include "GCVD/Addedutils.h"
-#include <GL/gl.h>
-#include <GL/glut.h>
 
 
 using namespace std;

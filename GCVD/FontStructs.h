@@ -1,8 +1,7 @@
 #ifndef __FONT_STRUCTS_H
 #define __FONT_STRUCTS_H
 
-#include <GL/gl.h>
-#include <GL/glut.h>
+#include "GLHelpers.h"
 
 namespace GLXInterface {
 

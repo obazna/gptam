@@ -3,8 +3,6 @@
 
 #include <map>
 
-#include <GL/gl.h>
-#include <GL/glut.h>
 #include "GLHelpers.h"
 
 #include "FontStructs.h"

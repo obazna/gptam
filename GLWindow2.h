@@ -19,8 +19,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
 
-#include <GL/gl.h>
-#include <GL/glut.h>
+#include "OpenGL.h"
 
 
 #include "GCVD/GLWindow.h"
